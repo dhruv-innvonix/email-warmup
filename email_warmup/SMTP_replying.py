@@ -212,7 +212,6 @@ class Reply_flow:
                 self.recipeint_mail_address, len(mailes)))
 
     def todays_mails_collector(self):
-        import pdb; pdb.set_trace()
         data_fetcher_data_list = []
         # Set Mailbox
         time.sleep(random_time)

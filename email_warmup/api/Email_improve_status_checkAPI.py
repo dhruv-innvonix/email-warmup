@@ -12,7 +12,6 @@ class Email_improve_status_checkAPI(APIView):
     def get(self, request, *args, **kwargs):
         filter_params = request.data
         if "email" in filter_params:
-            import pdb; pdb.set_trace()
             try:
                 FILTERING_QUERYSET = EmailImprovement.objects.get(
                     email=filter_params["email"])
