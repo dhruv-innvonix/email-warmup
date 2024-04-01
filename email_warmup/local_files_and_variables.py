@@ -32,6 +32,7 @@ logging.basicConfig(filename='./logs/python_sheduler.log',
 schedule_logger = logging.getLogger("python_sheduler")
 schedule_logger.setLevel(logging.DEBUG)
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
 
 class DataReader:
     def __init__(self):
@@ -227,12 +228,23 @@ def Vpn_starter():
         logger.info("Activated VPN")
 
     else:
+        # Construct the dynamic paths for the VPN configuration file and credentials file
+        vpn_config_file = os.path.join(current_directory, 'us-linux-free-41.protonvpn.net.udp.ovpn')
+        credentials_file = os.path.join(current_directory, 'credentials.txt')
+        
         # with open(r"/home/shiva/Innvonix/Projects/email-warmup-tool/email_warmup/credentials.txt", "w") as f:
-        with open(r"/mnt/c/Users/kaush/Innvonix/email_warmup/email-warmup-tool/email_warmup/credentials.txt", "w") as f:    
+        # with open(r"/mnt/c/Users/kaush/Innvonix/email_warmup/email-warmup-tool/email_warmup/credentials.txt", "w") as f:    
+        #     f.write(f"{username}\n{password}")
+
+        with open(credentials_file, "w") as f:
             f.write(f"{username}\n{password}")
 
-        # subprocess.Popen('echo "invx@123" | sudo -S openvpn --config /home/shiva/Innvonix/Projects/email-warmup-tool/email_warmup/us-linux-free-41.protonvpn.net.udp.ovpn --auth-user-pass /home/shiva/Innvonix/Projects/email-warmup-tool/email_warmup/credentials.txt', shell=True)
-        subprocess.Popen('echo "invx@123" | sudo -S openvpn --config /mnt/c/Users/kaush/Innvonix/email_warmup/email-warmup-tool/email_warmup/us-linux-free-41.protonvpn.net.udp.ovpn --auth-user-pass /mnt/c/Users/kaush/Innvonix/email_warmup/email-warmup-tool/email_warmup/credentials.txt', shell=True)
+        # # subprocess.Popen('echo "invx@123" | sudo -S openvpn --config /home/shiva/Innvonix/Projects/email-warmup-tool/email_warmup/us-linux-free-41.protonvpn.net.udp.ovpn --auth-user-pass /home/shiva/Innvonix/Projects/email-warmup-tool/email_warmup/credentials.txt', shell=True)
+        # subprocess.Popen('echo "invx@123" | sudo -S openvpn --config /mnt/c/Users/kaush/Innvonix/email_warmup/email-warmup-tool/email_warmup/us-linux-free-41.protonvpn.net.udp.ovpn --auth-user-pass /mnt/c/Users/kaush/Innvonix/email_warmup/email-warmup-tool/email_warmup/credentials.txt', shell=True)
+        
+        # Run the subprocess command with dynamic file paths
+        command = f'openvpn --daemon --config {vpn_config_file} --auth-user-pass {credentials_file}'
+        subprocess.Popen(command, shell=True)
         
         schedule_logger.info("Activated VPN")
         logger.info("Activated VPN")
@@ -260,7 +272,7 @@ def Vpn_quiter():
         logger.info("Deactivated VPN")
         return "Windows Vpn_is_not_running"
     else:
-        subprocess.Popen('echo "invx@123" | sudo killall openvpn', shell=True)
+        subprocess.Popen('pkill -9 openvpn', shell=True)
         schedule_logger.info("Deactivated VPN")
         logger.info("Deactivated VPN")
         return "Linux Vpn_is_not_running"
