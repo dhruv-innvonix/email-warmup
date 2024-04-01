@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: .
-    image: dhruvinnvonix/emailwarmup:0.0.1
+    image: dhruvinnvonix/warmup:0.0.1
     ports:
       - "8000:8000"
     sysctls:
