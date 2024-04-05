@@ -4,13 +4,19 @@ from email_warmup.serializers import (
     EmailImprovementSerializer,
 )
 from rest_framework.decorators import api_view
-
+from email_warmup.models import EmailImprovement
 
 @api_view(['POST'])
 def EmailImprovementRegistrationAPI(request):
     if request.method == 'POST':
         name = request.data.get('name')
         email = request.data.get('email')
+        # Check if email already exists
+        existing_email = EmailImprovement.objects.filter(email=email).first()
+        if existing_email:
+            email_is_active = existing_email.is_active
+            return Response({"error": "Email already registered", "email_is_active": email_is_active}, status=status.HTTP_400_BAD_REQUEST)
+        
         password = request.data.get('password')
         smtp_port = request.data.get('smtp_port')
         smtp_host = request.data.get('smtp_host')

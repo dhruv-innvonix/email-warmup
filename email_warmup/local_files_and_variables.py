@@ -73,7 +73,7 @@ class DataReader:
 
     def fetching_DB_Tables(self):
         self.sender_file = pd.read_sql(
-            'select * from "email_warmup_emailimprovement"', con=self.conn)
+            'select * from "email_warmup_emailimprovement"  WHERE is_active = true', con=self.conn)
         # sender_file.reset_index(drop=True, inplace=True)
         self.gmail_recipient_file = pd.read_sql(
             'select * from "email_warmup_gmailrecipient"', con=self.conn)
